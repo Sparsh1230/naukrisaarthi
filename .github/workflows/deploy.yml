@@ -1,0 +1,17 @@
+name: Deploy
+on: [push]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Deploy to EC2
+      uses: appleboy/ssh-action@master
+      with:
+        host: 65.2.90.199
+        username: ec2-user
+        key: ${{ secrets.SSH_KEY }}
+        script: |
+          cd /home/ec2-user/naukrisaarthi
+          git pull
+          sudo systemctl restart naukrisaarthi
